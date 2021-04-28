@@ -2,6 +2,7 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   skip_before_action :set_tenant, only: [:new, :create]
+  before_action :configure_sign_up_params, only: [:create]
   prepend_before_action :require_no_authentication, only: [:new, :create, :cancel]
   prepend_before_action :authenticate_scope!, only: [:edit, :update, :destroy]
   prepend_before_action :set_minimum_password_length, only: [:new, :edit]
@@ -15,17 +16,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    user_params = sign_up_params_user
-    account_params = sign_up_params_account
-    build_resource(user_params)
-    account = Account.new(account_params)
-    resource.valid?
-    byebug
-    if account.valid? && resource.errors[:email].empty? && resource.errors[:password].empty? && resource.errors[:password_confirmation].empty?
-      account.save
-      resource.account_id = account.id
-      resource.save
-      yield resource if block_given?
+    resource.build_account
+    build_resource(sign_up_params)
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      Member.create(user_id: resource.id, account_id: resource.account.id)
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
         sign_up(resource_name, resource)
@@ -140,12 +136,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     self.resource = send(:"current_#{resource_name}")
   end
 
-  def sign_up_params_user
+  def sign_up_params
     devise_parameter_sanitizer.sanitize(:sign_up)
   end
 
-  def sign_up_params_account
-    params.require(:account).permit(:name, :plan)
+  # If you have extra params to permit, append them to the sanitizer.
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: [account_attributes: [:name, :plan]])
   end
 
   def account_update_params

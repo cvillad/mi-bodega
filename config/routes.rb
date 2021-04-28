@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :boxes
   resources :accounts
+  resources :members
   devise_for :users, controllers: {
     registrations: "users/registrations",
     sessions: "users/sessions",
