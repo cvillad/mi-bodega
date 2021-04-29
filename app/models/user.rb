@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_one :account, dependent: :destroy
   accepts_nested_attributes_for :account
 
-  def self.create_member(params)
+  def username 
+    email.slice(0...email.index("@"))
   end
 end

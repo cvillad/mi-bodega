@@ -18,10 +18,10 @@
         <% if current_user %>
           <li class="dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= current_user.email %>
+              <%= "#{current_user.username} - #{current_tenant.name}" %>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <%= link_to current_tenant.name, "#", class: "dropdown-item" if current_tenant %>
+              <%= link_to "Change account", "#", class: "dropdown-item" if current_tenant %>
               <%= link_to "Logout", destroy_user_session_path, class: "dropdown-item", method: :delete %>
             </div>
           </li>

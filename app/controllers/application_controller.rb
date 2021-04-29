@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   #before_action :set_member, only: [:show, :edit, :update, :destroy]
 
   def set_tenant
-    set_current_tenant(Member.find(current_user.id).account)
+    @current_account||= Member.find_by_user_id(current_user.id).account
+    set_current_tenant(@current_account)
   end
 end

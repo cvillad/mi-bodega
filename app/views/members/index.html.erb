@@ -10,7 +10,7 @@
     <% @members.each do |member| %>
       <tr>
         <td><%= member.user.email %></td>
-        <td><%= link_to 'Delete from this account', member, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %></td>
+        <td><%= link_to 'Delete from this account', member, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" if current_user.account&.id == current_tenant.id %></td>
       </tr>
     <% end %>
   </tbody>

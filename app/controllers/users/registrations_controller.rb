@@ -10,13 +10,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     build_resource
+    resource.build_account
     yield resource if block_given?
     respond_with resource
   end
 
   # POST /resource
   def create
-    resource.build_account
     build_resource(sign_up_params)
     resource.save
     yield resource if block_given?
