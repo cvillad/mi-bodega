@@ -34,5 +34,7 @@ module MiBodega
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    config.hosts = nil
+    config.session_store :cookie_store, :key => '_some_key', :domain => '.lvh.me'
   end
 end

@@ -3,7 +3,7 @@ class MembersController < ApplicationController
 
   # GET /Members or /Members.json
   def index
-    @members = Member.includes(:user)
+    @members = current_tenant.members.includes(:user)
   end
 
   # GET /Members/1 or /Members/1.json
@@ -15,17 +15,13 @@ class MembersController < ApplicationController
     @user = User.new
   end
 
-  # GET /Members/1/edit
-  def edit
-  end
-
   # POST /Members or /Members.json
   def create
     @user = User.find_by_email(user_params[:email])
     if @user.nil?
       @user = User.new(user_params.merge(password: "secret"))
       if @user.save 
-        @member = @user.members.create
+        @member = @user.members.create(account_id: currrent_tenant.id)
         @user.send(:generate_confirmation_token)
         Devise::Mailer.confirmation_instructions(@user, @user.instance_variable_get(:@raw_confirmation_token))
         flash[:notice] =  "Email invitation sent to #{@user.email}." 
@@ -35,7 +31,7 @@ class MembersController < ApplicationController
       end
     else
       if !Member.exists?(user_id: @user.id)
-        @member = @user.members.create
+        @member = @user.members.create(account_id: currrent_tenant.id)
         flash[:notice] = "#{@user.email} added succesfully"
         redirect_to members_path
       else
