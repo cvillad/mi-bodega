@@ -48,6 +48,7 @@ end
 
 # Authentication
 gem 'devise'
+gem 'devise_invitable', '~> 2.0.0'
 gem 'acts_as_tenant'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

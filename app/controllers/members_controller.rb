@@ -21,9 +21,8 @@ class MembersController < ApplicationController
     if @user.nil?
       @user = User.new(user_params.merge(password: "secret"))
       if @user.save 
-        @member = @user.members.create(account_id: currrent_tenant.id)
-        @user.send(:generate_confirmation_token)
-        Devise::Mailer.confirmation_instructions(@user, @user.instance_variable_get(:@raw_confirmation_token))
+        @member = @user.members.create(account_id: current_tenant.id)
+        @user.invite!(current_user)
         flash[:notice] =  "Email invitation sent to #{@user.email}." 
         redirect_to members_path
       else
@@ -31,7 +30,7 @@ class MembersController < ApplicationController
       end
     else
       if !Member.exists?(user_id: @user.id)
-        @member = @user.members.create(account_id: currrent_tenant.id)
+        @member = @user.members.create(account_id: current_tenant.id)
         flash[:notice] = "#{@user.email} added succesfully"
         redirect_to members_path
       else

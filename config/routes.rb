@@ -5,10 +5,11 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: "users/registrations",
     sessions: "users/sessions",
-    confirmations: "users/confirmations"
+    confirmations: "users/confirmations",
+    passwords: "users/passwords",
+    invitations: 'users/invitations'
   }
-
-  get "accounts/choose/:id", to: "accounts#choose", as: "choose_account"
+  
   resources :boxes
   resources :accounts, except: [:new, :create]
   resources :members, except: [:edit, :update]
