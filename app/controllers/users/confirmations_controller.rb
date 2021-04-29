@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Users::ConfirmationsController < Devise::ConfirmationsController
+  skip_before_action :authenticate_tenant!
   def new
     self.resource = resource_class.new
   end

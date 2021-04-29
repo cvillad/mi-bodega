@@ -23,15 +23,20 @@
 
   <%= f.fields_for :account do |a| %>
     <div class="form-row mb-3" >
-      <div class="col">
+      <div class="col-6">
         <%= a.label :name, "Account name" %>
         <%= a.text_field :name, required: true, class: "form-control" %>
       </div>
-      <div class="col">
-        <%= a.label :plan, "Account plan" %>
+      <div class="col-3">
+        <%= a.label :subdomain, "Subdomain" %>
+        <%= a.text_field :subdomain, required: true, class: "form-control" %>
+      </div>
+      <div class="col-3">
+        <%= a.label :plan, "Plan" %>
         <%= a.select :plan, options_for_select(Plan.options, params[:plan]), {}, class: "form-control" %>
       </div>
     </div>
+
   <% end %>
 
   <div class="actions">
