@@ -19,17 +19,29 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     build_resource
     resource.build_account 
+    resource.assign_attributes(sign_up_params)
+    resource.skip_confirmation!
     yield resource if block_given?
-    if resource.update(sign_up_params)
-      Member.create(user_id: resource.id, account_id: resource.account.id)
-      if resource.active_for_authentication?
-        set_flash_message! :notice, :signed_up
-        sign_up(resource_name, resource)
-        respond_with resource, location: after_sign_up_path_for(resource)
-      else
-        set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
-        expire_data_after_sign_in!
-        respond_with resource, location: after_inactive_sign_up_path_for(resource)
+    if resource.valid?
+      begin
+        resource.save
+        if resource.account.plan != "free"
+          resource.account.subscribe(payment_method_params)
+        end
+        Member.create(user_id: resource.id, account_id: resource.account.id)
+        if resource.active_for_authentication?
+          set_flash_message! :notice, :signed_up
+          sign_up(resource_name, resource)
+          respond_with resource, location: after_sign_up_path_for(resource)
+        else
+          set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+          expire_data_after_sign_in!
+          respond_with resource, location: after_inactive_sign_up_path_for(resource)
+        end
+      rescue => e
+        resource.destroy
+        flash[:alert] = e.message
+        redirect_to new_user_registration_path
       end
     else
       clean_up_passwords resource
@@ -138,6 +150,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def sign_up_params
     devise_parameter_sanitizer.sanitize(:sign_up)
+  end
+
+  def payment_method_params 
+    params.require(:payment_method).permit(:number, :cvc, :exp_month, :exp_year).to_h
   end
 
   # If you have extra params to permit, append them to the sanitizer.

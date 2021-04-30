@@ -1,6 +1,7 @@
+<script src="https://js.stripe.com/v3/"></script>
 <h2>Sign up</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: "cc-form") do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="form-group">
@@ -23,19 +24,49 @@
 
   <%= f.fields_for :account do |a| %>
     <div class="form-row mb-3" >
-      <div class="col-6">
+      <div class="col-12 col-sm-6">
         <%= a.label :name, "Account name" %>
         <%= a.text_field :name, required: true, class: "form-control" %>
       </div>
-      <div class="col-3">
+      <div class="col-12 col-sm-3">
         <%= a.label :subdomain, "Subdomain" %>
         <%= a.text_field :subdomain, required: true, class: "form-control" %>
       </div>
-      <div class="col-3">
+      <div class="col-12 col-sm-3">
         <%= a.label :plan, "Plan" %>
         <%= a.select :plan, options_for_select(Plan.options, params[:plan]), {}, class: "form-control" %>
       </div>
     </div>
+
+     <%= fields_for :payment_method do |p| %>
+        <div class="form-row mb-3">
+          <div class="col-12 col-sm-6">
+            <%= p.label :number, "Card number" %>
+            <%= p.text_field :number, class: "form-control", required: true, data: {stripe: "number"}  %>
+          </div>
+          <div class="col-12 col-sm-2">
+            <%= p.label :cvc, "CVV", data: {stripe: "label"} %>
+            <%= p.text_field :cvc, class: "form-control", required: true, data: {stripe: "cvc"}  %>
+          </div>
+          <div class="form-group col-12 col-sm-4"> 
+            <div class="row">
+              <div class="col-12">
+                <%= p.label :card_expires, "Card expires", data: {stripe: "label"} %>
+              </div>
+              <div class="col-6">
+                <%= p.select :exp_month, options_for_select(PaymentMethod.month_options), 
+                  {include_blank: "Month"}, "data-stripe": "exp-month", class: "form-control",
+                  required: true %>
+              </div>
+              <div class="col-6 pl-sm-0">
+                <%= p.select :exp_year, options_for_select(PaymentMethod.year_options), 
+                    {include_blank: "Year"}, "data-stripe": "exp-year", class: "form-control",
+                    required: true %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
 
   <% end %>
 

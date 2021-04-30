@@ -20,7 +20,7 @@
         <% if current_user %>
           <li class="dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= "#{current_user.username}" "#{" - #{current_tenant.name}" if current_tenant}" %>
+              <%= "#{current_user.username}" "#{" - #{current_tenant.name} (#{current_tenant.plan})" if current_tenant}" %>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <%= link_to "Change account", accounts_path, class: "dropdown-item" %>
