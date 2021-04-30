@@ -1,5 +1,5 @@
 <h1>Invite a user</h1>
-<%= form_with(model: @user, url: members_path) do |form| %>
+<%= form_with(model: @user, url: members_path, method: :post) do |form| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user.errors.count, "error") %> prohibited this @user from being saved:</h2>
