@@ -12,12 +12,14 @@
   <thead>
     <tr>
       <th> Amount (USD) </th>
+      <th> Date </th>
     </tr>
   </thead>
   <tbody>
     <% @charges.each do |charge| %>
       <tr>
         <td><%= number_to_currency(charge[:amount_paid]/100) %> </td>
+        <td><%= DateTime.strptime(charge[:created].to_s,'%s').strftime("%B %d, %Y") %></td>
       </tr>
     <% end %>
   </tbody>
