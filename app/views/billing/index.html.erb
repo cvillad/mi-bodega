@@ -1,0 +1,24 @@
+<div class="card mb-3">
+  <h5 class="card-header">Billing information</h5>
+  <div class="card-body">
+    <h5 class="card-title">Details</h5>
+    <p class="card-text"><%= @payment_method.brand %>  *****<%= @payment_method.last4 %> </p>
+    <p class="card-text"> Plan: <%= current_tenant.plan %></p>
+    <p class="card-text"> Price: <%= number_to_currency(Plan.prices[current_tenant.plan.to_sym]/100) %>/month </p>
+  </div>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th> Amount (USD) </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @charges.each do |charge| %>
+      <tr>
+        <td><%= number_to_currency(charge[:amount]/100) %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

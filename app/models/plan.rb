@@ -7,6 +7,10 @@ class Plan
     STRIPE_PRICES
   end
 
+  def self.prices 
+    PRICES
+  end
+
   def self.options
     PLANS.map {|plan| [plan.capitalize, plan]}
   end
