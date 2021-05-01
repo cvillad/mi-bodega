@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
-  include UrlHelper
+  include UrlHelper, DateHelper
   before_action :authenticate_user!
   set_current_tenant_by_subdomain(:account, :subdomain)
   before_action :authenticate_tenant!
 
   def authenticate_tenant!
     if !current_user.accounts.exists?(current_tenant&.id)
-      flash[:alert] = "You are not a member of this account"
+      flash[:alert] = request.subdomain.empty? ? "Select an account first" : "You're not a member of the selected account" 
       redirect_to accounts_path
     end
   end

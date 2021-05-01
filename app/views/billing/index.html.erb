@@ -2,25 +2,33 @@
   <h5 class="card-header">Billing information</h5>
   <div class="card-body">
     <h5 class="card-title">Details</h5>
-    <p class="card-text"><%= @payment_method.brand %>  *****<%= @payment_method.last4 %> </p>
-    <p class="card-text"> Plan: <%= current_tenant.plan %></p>
-    <p class="card-text"> Price: <%= number_to_currency(Plan.prices[current_tenant.plan.to_sym]/100) %>/month </p>
+    <p class="card-text"> <%= current_tenant.plan.capitalize %> plan</p>
+    <% if @payment_method  %>
+      <p class="card-text"><%= @payment_method.brand %>  *****<%= @payment_method.last4 %> </p>
+      <p class="card-text"> Price: <%= number_to_currency(Plan.prices[current_tenant.plan.to_sym]/100) %>/month </p>
+      <p class="card-text"> Next charge on: <%= to_date(@subscription[:current_period_end].to_s) %></p>
+    <% end %>
+    
   </div>
 </div>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th> Amount (USD) </th>
-      <th> Date </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @charges.each do |charge| %>
+<% if @payment_method %>
+  <table class="table table-bordered">
+    <thead>
       <tr>
-        <td><%= number_to_currency(charge[:amount_paid]/100) %> </td>
-        <td><%= DateTime.strptime(charge[:created].to_s,'%s').strftime("%B %d, %Y") %></td>
+        <th> Amount (USD) </th>
+        <th> Payment Date  </th>
+        <th> Reason </th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @charges.each do |charge| %>
+        <tr>
+          <td><%= number_to_currency(charge[:amount]/100) %> </td>
+          <td><%= to_date(charge[:created].to_s) %></td>
+          <td><%= charge[:description] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

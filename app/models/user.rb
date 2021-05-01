@@ -12,6 +12,7 @@ class User < ApplicationRecord
   def is_admin?(tenant_id)
     account&.id == tenant_id
   end
+
   def username 
     email.slice(0...email.index("@"))
   end

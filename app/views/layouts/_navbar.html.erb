@@ -24,7 +24,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <%= link_to "Change account", accounts_path, class: "dropdown-item" %>
-              <%= link_to "Billing information", billing_path, class: "dropdown-item" if current_user.is_admin?(current_tenant&.id) && current_tenant.plan!="free" %>
+              <%= link_to "Billing information", billing_path, class: "dropdown-item" if current_user.is_admin?(current_tenant&.id) %>
               <%= link_to "Logout", destroy_user_session_path, class: "dropdown-item", method: :delete %>
             </div>
           </li>
