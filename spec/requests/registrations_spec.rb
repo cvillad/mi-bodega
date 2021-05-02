@@ -36,6 +36,10 @@ RSpec.describe Users::RegistrationsController, type: :request do
         end
 
         it_behaves_like "user_creation"
+
+        it "should create a payment method" do 
+          expect{subject}.not_to change{PaymentMethod.count}
+        end
       end
 
       describe "and plan is not free" do 

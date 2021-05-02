@@ -25,7 +25,16 @@ class BoxesController < ApplicationController
 
     respond_to do |format|
       if @box.save
-        format.html { redirect_to @box, notice: "Box was successfully created." }
+        qrcode = RQRCode::QRCode.new("#{request.url}/#{@box.id}")
+        svg = qrcode.as_svg(
+          offset: 0,
+          color: '000',
+          shape_rendering: 'crispEdges',
+          module_size: 4,
+          standalone: true
+        )
+        @box.update(qr_code: svg)
+        format.html { redirect_to boxes_path, notice: "Box was successfully created." }
         format.json { render :show, status: :created, location: @box }
       else
         format.html { render :new, status: :unprocessable_entity }
