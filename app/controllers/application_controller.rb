@@ -11,6 +11,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_member
+    @current_member||=current_tenant.members.find_by_user_id(current_user.id)
+  end
+
   def after_accept_path_for(resource)
     accounts_path
   end

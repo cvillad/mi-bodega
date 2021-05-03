@@ -21,8 +21,7 @@ class BoxesController < ApplicationController
 
   # POST /boxes or /boxes.json
   def create
-    @box = Box.new(box_params)
-
+    @box = current_user.boxes.build(box_params.merge(member: current_member))
     respond_to do |format|
       if @box.save
         qrcode = RQRCode::QRCode.new("#{request.url}/#{@box.id}")
@@ -73,6 +72,6 @@ class BoxesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def box_params
-      params.require(:box).permit(:account_id, :name)
+      params.require(:box).permit(:name)
     end
 end

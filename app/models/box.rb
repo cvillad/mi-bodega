@@ -1,5 +1,7 @@
 class Box < ApplicationRecord
   acts_as_tenant :account
+  belongs_to :member
+  has_one :user, through: :member
   validate :box_by_plan
 
   def box_by_plan
