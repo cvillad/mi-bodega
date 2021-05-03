@@ -1,0 +1,25 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Add a new item</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <%= form_with model: @item, url: box_items_path(@box) do |f| %>
+      <%= render "layouts/error_messages", resource: @item %>
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_field :description, class: "form-control", required: true %>
+      </div>
+      <div class="custom-file">
+        <%= f.file_field :image, required: true, class: "custom-file-input", id: "image" %>
+        <label class="custom-file-label" for="image">Choose image file</label>
+      </div>
+      <div class="form-group mt-3 d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <%= f.submit "Create item", class: "btn btn-primary ml-2" %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   }
 
   resources :boxes do 
-    resources :items, only: :destroy, controller: "boxes/items"
+    resources :items, only: [:destroy, :new, :create], controller: "boxes/items"
   end
   get "billing", to: "billing#index"
   resources :accounts, except: [:new, :create]
