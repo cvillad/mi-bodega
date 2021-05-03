@@ -1,4 +1,4 @@
-<h1>Invite a user</h1>
+<h1 class="text-center mb-3">Invite a user</h1>
 <%= form_with(model: @user, url: members_path, method: :post) do |form| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">

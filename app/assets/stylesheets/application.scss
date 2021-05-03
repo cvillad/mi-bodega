@@ -15,4 +15,9 @@
  *= require_self
  */
 
- @import "bootstrap/scss/bootstrap"
+@import "bootstrap/scss/bootstrap";
+
+.item-img{
+  height: 280px;
+  border-radius: 2%;
+}

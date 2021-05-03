@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     invitations: 'users/invitations'
   }
 
-  resources :boxes
+  resources :boxes do 
+    resources :items, only: :destroy, controller: "boxes/items"
+  end
   get "billing", to: "billing#index"
   resources :accounts, except: [:new, :create]
   resources :members, except: [:edit, :update]

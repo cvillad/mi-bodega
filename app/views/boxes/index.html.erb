@@ -1,15 +1,18 @@
-<h1>Boxes</h1>
+<h1 class="text-center mb-3">Boxes</h1>
 
 <div class="row justify-content-center">
   <% @boxes.each do |box| %>
     <div class="col-7 col-sm-6 col-md-4 mb-3">
-      <div class="card py-4">
+      <div class="card pt-4">
         <div class="d-flex justify-content-center">
           <%= box.qr_code.html_safe %>
         </div>
         <div class="card-body">
           <h5 class="card-title"><%= box.name %></h5>
-          <%= link_to "View", box, class: "btn btn-primary bt-sm" %>
+          <div class="d-flex">
+            <%= link_to "View", box, class: "btn btn-primary btn-sm mr-2" %>
+            <%= link_to "Delete", box, class: "btn btn-danger btn-sm", data: {confirm: "Are you sure?"}, method: :delete %>
+          </div>
         </div>
       </div>
     </div>

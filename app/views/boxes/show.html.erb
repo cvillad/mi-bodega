@@ -1,12 +1,17 @@
-<p>
-  <strong>Account:</strong>
-  <%= @box.account_id %>
-</p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @box.name %>
-</p>
-
-<%= link_to 'Edit', edit_box_path(@box) %> |
-<%= link_to 'Back', boxes_path %>
+<h3 class="text-center mb-3"><%= @box.name %></h3>
+<div class="row justify-content-center">
+  <% @box.items.each do |item| %>
+    <div class="col-7 col-sm-6 col-md-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= item.description %></h5>
+          <%= image_tag url_for(item.image), class: "mb-3 w-100 item-img" %>
+          <div class="d-flex">
+            <%= link_to "Delete", box_item_path(@box, item), class: "btn btn-danger btn-sm", data: {confirm: "Are you sure?"}, method: :delete %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<%= link_to "Add item", "#", class: "btn btn-primary" %>

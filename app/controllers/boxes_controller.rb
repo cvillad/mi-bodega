@@ -13,6 +13,7 @@ class BoxesController < ApplicationController
   # GET /boxes/new
   def new
     @box = Box.new
+    @box.items.build
   end
 
   # GET /boxes/1/edit
@@ -72,6 +73,6 @@ class BoxesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def box_params
-      params.require(:box).permit(:name)
+      params.require(:box).permit(:name, items_attributes: [:description, :image, :_destroy])
     end
 end
