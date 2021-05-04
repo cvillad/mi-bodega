@@ -1,6 +1,7 @@
 class Boxes::ItemsController < ApplicationController
   before_action :set_box 
   before_action :set_item, except: [:new, :create]
+  before_action :validate_use, only: [:use, :update] 
 
   def new 
     @item = @box.items.build
@@ -11,13 +12,8 @@ class Boxes::ItemsController < ApplicationController
   end
 
   def use
-    if @item.using_by.nil?
-      @item.update(using_by_id: current_member.id)
-      redirect_to @box, notice: "You're using this item now"
-    else
-      redirect_to @box, alert: "There is another member using the item at this time"
-    end
-   
+    @item.update(using_by_id: current_member.id)
+    redirect_to @box, notice: "You're using this item now"
   end
 
   def return
@@ -71,6 +67,10 @@ class Boxes::ItemsController < ApplicationController
 
   def item_params 
     params.require(:item).permit(:description, :image)
+  end
+
+  def validate_use
+    redirect_to @box, alert: "There is another member using the item at this time" if !@item.using_by.nil?
   end
 
 end
