@@ -9,6 +9,11 @@ class Account < ApplicationRecord
   has_many :boxes, dependent: :destroy
   has_one :payment_method, dependent: :destroy
   belongs_to :user
+  before_destroy :delete_stripe_customer
+
+  def delete_stripe_customer
+    Stripe::Customer.delete(stripe_customer_id)
+  end
 
   def subscribe(payment_method_params)
     price = Plan.stripe_prices[plan.to_sym]

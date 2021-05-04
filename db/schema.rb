@@ -70,7 +70,6 @@ ActiveRecord::Schema.define(version: 2021_05_03_212736) do
     t.bigint "box_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "old_box"
     t.bigint "using_by_id"
     t.index ["box_id"], name: "index_items_on_box_id"
     t.index ["using_by_id"], name: "index_items_on_using_by_id"
