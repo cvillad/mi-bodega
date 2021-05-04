@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   resources :boxes do 
     resources :items, only: [:destroy, :new, :create, :update], controller: "boxes/items"
     get "move/:id", to: "boxes/items#move", as: "item_move"
+    patch "use/:id", to: "boxes/items#use", as: "item_use"
+    patch "return/:id", to: "boxes/items#return", as: "item_return"
   end
   get "billing", to: "billing#index"
   resources :accounts, except: [:new, :create]

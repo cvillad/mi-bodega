@@ -10,6 +10,21 @@ class Boxes::ItemsController < ApplicationController
     end
   end
 
+  def use
+    if @item.using_by.nil?
+      @item.update(using_by_id: current_member.id)
+      redirect_to @box, notice: "You're using this item now"
+    else
+      redirect_to @box, alert: "There is another member using the item at this time"
+    end
+   
+  end
+
+  def return
+    @item.update(using_by_id: nil)
+    redirect_to @box, notice: "You're not using this item anymore"
+  end
+
   def move
     boxes = Box.select(:id, :name).where.not(id: params[:box_id])
     @options = boxes.each.map{|box| [box.name, box.id]}

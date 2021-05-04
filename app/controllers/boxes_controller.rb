@@ -3,11 +3,12 @@ class BoxesController < ApplicationController
 
   # GET /boxes or /boxes.json
   def index
-    @boxes = Box.all
+    @boxes = Box.order
   end
 
   # GET /boxes/1 or /boxes/1.json
   def show
+    @items = @box.items.order(:created_at)
   end
 
   # GET /boxes/new
