@@ -18,5 +18,6 @@ Rails.application.routes.draw do
   end
   get "billing", to: "billing#index"
   resources :accounts, except: [:new, :create]
+  patch "/accounts/select/:id", to: "accounts#select", as: "select_account"
   resources :members, except: [:edit, :update]
 end

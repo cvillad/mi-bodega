@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :boxes, through: :members
   has_one :item, through: :members
   has_one :account, dependent: :destroy
- 
+  belongs_to :current_tenant, class_name: "Account", foreign_key: "current_tenant_id", optional: true
   accepts_nested_attributes_for :account
 
   def is_admin?(tenant_id)

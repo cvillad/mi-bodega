@@ -4,7 +4,7 @@
   <tbody>
     <% @accounts.each do |account| %>
         <tr>
-          <td><%= link_to "#{account.name} (#{account.plan} plan)", "#{change_subdomain(@url, @subdomain, account.subdomain)}/boxes" %></td>
+          <td><%= link_to "#{account.name} (#{account.plan} plan)", select_account_path(account), method: :patch %></td>
         </tr>
     <% end %>
   </tbody>

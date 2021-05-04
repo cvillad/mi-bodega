@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
-  include UrlHelper, DateHelper
+  include DateHelper
+  set_current_tenant_through_filter
   before_action :authenticate_user!
-  set_current_tenant_by_subdomain(:account, :subdomain)
+  before_action :set_tenant
   before_action :authenticate_tenant!
 
   def authenticate_tenant!
@@ -9,6 +10,10 @@ class ApplicationController < ActionController::Base
       flash[:alert] = request.subdomain.empty? ? "Select an account first" : "You're not a member of the selected account" 
       redirect_to accounts_path
     end
+  end
+
+  def set_tenant
+    set_current_tenant(current_user.current_tenant)
   end
 
   def current_member
@@ -21,11 +26,5 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     accounts_path
-  end
-
-  def after_sign_out_path_for(resource_or_scope)
-    subdomain = request.subdomain
-    url = request.protocol + request.host_with_port
-    change_subdomain(url, subdomain, "")
   end
 end
