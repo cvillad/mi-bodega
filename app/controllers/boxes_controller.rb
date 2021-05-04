@@ -3,7 +3,7 @@ class BoxesController < ApplicationController
 
   # GET /boxes or /boxes.json
   def index
-    @boxes = Box.order
+    @boxes = Box.all
   end
 
   # GET /boxes/1 or /boxes/1.json
