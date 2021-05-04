@@ -12,7 +12,7 @@ class Account < ApplicationRecord
   before_destroy :delete_stripe_customer
 
   def delete_stripe_customer
-    Stripe::Customer.delete(stripe_customer_id)
+    Stripe::Customer.delete(stripe_customer_id) if stripe_customer_id
   end
 
   def subscribe(payment_method_params)
