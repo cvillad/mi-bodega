@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_03_153249) do
+ActiveRecord::Schema.define(version: 2021_05_03_212736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,7 +70,10 @@ ActiveRecord::Schema.define(version: 2021_05_03_153249) do
     t.bigint "box_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "old_box"
+    t.bigint "using_by_id"
     t.index ["box_id"], name: "index_items_on_box_id"
+    t.index ["using_by_id"], name: "index_items_on_using_by_id"
   end
 
   create_table "members", force: :cascade do |t|
@@ -124,6 +127,7 @@ ActiveRecord::Schema.define(version: 2021_05_03_153249) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "boxes", "accounts"
   add_foreign_key "items", "boxes"
+  add_foreign_key "items", "members", column: "using_by_id"
   add_foreign_key "members", "accounts"
   add_foreign_key "members", "users"
   add_foreign_key "payment_methods", "accounts"

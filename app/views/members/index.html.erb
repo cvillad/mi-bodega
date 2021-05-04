@@ -10,7 +10,7 @@
     <% @members.each do |member| %>
       <% if member.user.active_for_authentication? %>
         <tr>
-          <td><%= member.user.email %></td>
+          <td><%= member.user.email %><%= '<span class="badge badge-secondary ml-1">Admin</span>'.html_safe if member.user.is_admin?(current_tenant.id) %></td>
           <% if current_user.is_admin?(current_tenant.id) %>
             <td><%= link_to 'Delete from this account', member, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" if current_user != member.user %></td>
           <% end %>

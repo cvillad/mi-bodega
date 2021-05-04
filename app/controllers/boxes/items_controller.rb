@@ -1,12 +1,28 @@
 class Boxes::ItemsController < ApplicationController
   before_action :set_box 
-  before_action :set_item, only: :destroy
+  before_action :set_item, except: [:new, :create]
 
   def new 
     @item = @box.items.build
     respond_to do |format|
       format.html
       format.js
+    end
+  end
+
+  def move
+    boxes = Box.select(:id, :name).where.not(id: params[:box_id])
+    @options = boxes.each.map{|box| [box.name, box.id]}
+    respond_to do |format|
+      format.html 
+      format.js
+    end
+  end
+
+  def update
+    @target_box = current_tenant.boxes.find(params[:to_box])
+    if @item.update(box_id: @target_box.id)
+      redirect_to @box, notice: "Item moved to box #{@target_box.name}"
     end
   end
 

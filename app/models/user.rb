@@ -7,7 +7,9 @@ class User < ApplicationRecord
   has_many :members, dependent: :destroy
   has_many :accounts, through: :members
   has_many :boxes, through: :members
+  has_one :item, through: :members
   has_one :account, dependent: :destroy
+ 
   accepts_nested_attributes_for :account
 
   def is_admin?(tenant_id)
