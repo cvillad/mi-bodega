@@ -40,6 +40,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
           respond_with resource, location: after_inactive_sign_up_path_for(resource)
         end
       rescue => e
+        byebug
         resource.destroy
         flash[:alert] = e.message
         redirect_to new_user_registration_path
@@ -159,7 +160,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [account_attributes: [:name, :plan, :subdomain]])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [account_attributes: [:name, :plan]])
   end
 
   def account_update_params

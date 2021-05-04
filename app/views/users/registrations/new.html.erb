@@ -28,11 +28,7 @@
         <%= a.label :name, "Account name" %>
         <%= a.text_field :name, required: true, class: "form-control" %>
       </div>
-      <div class="col-12 col-sm-3">
-        <%= a.label :subdomain, "Subdomain" %>
-        <%= a.text_field :subdomain, required: true, class: "form-control" %>
-      </div>
-      <div class="col-12 col-sm-3">
+      <div class="col-12 col-sm-6">
         <%= a.label :plan, "Plan" %>
         <%= a.select :plan, options_for_select(Plan.options, params[:plan]), {}, class: "form-control", id: "tenant_plan" %>
       </div>
