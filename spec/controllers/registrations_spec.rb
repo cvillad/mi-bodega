@@ -1,6 +1,8 @@
 require 'rails_helper' 
 
-RSpec.describe Users::RegistrationsController, type: :request do 
+RSpec.describe Users::RegistrationsController, type: :controller do 
+  before{request.env["devise.mapping"] = Devise.mappings[:user]}
+  
   describe "#create" do 
     shared_examples_for "user_creation" do 
       it "should create a user" do 
@@ -16,7 +18,7 @@ RSpec.describe Users::RegistrationsController, type: :request do
       end
     end
 
-    subject {post "/users", params: params }
+    subject {post :create, params: params }
     
     context "when provided data is valid" do
       describe "and plan is free" do 
@@ -36,10 +38,6 @@ RSpec.describe Users::RegistrationsController, type: :request do
         end
 
         it_behaves_like "user_creation"
-
-        it "should create a payment method" do 
-          expect{subject}.not_to change{PaymentMethod.count}
-        end
       end
 
       describe "and plan is not free" do 
@@ -64,10 +62,6 @@ RSpec.describe Users::RegistrationsController, type: :request do
           }
         end
         it_behaves_like "user_creation"
-
-        it "should create a payment method" do 
-          expect{subject}.to change{PaymentMethod.count}.by(1)
-        end
       end
     end
   end

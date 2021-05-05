@@ -26,7 +26,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource.valid?
       begin
         resource.save
-        if resource.account.plan != "free"
+        if Rails.env != "test" && resource.account.plan != "free"
           resource.account.subscribe(payment_method_params)
         end
         Member.create(user_id: resource.id, account_id: resource.account.id)
@@ -40,7 +40,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
           respond_with resource, location: after_inactive_sign_up_path_for(resource)
         end
       rescue => e
-        byebug
         resource.destroy
         flash[:alert] = e.message
         redirect_to new_user_registration_path

@@ -1,13 +1,9 @@
 class MembersController < ApplicationController
-  before_action :set_member, only: %i[ show edit update destroy ]
+  before_action :set_member, only: %i[ destroy ]
 
   # GET /Members or /Members.json
   def index
     @members = current_tenant.members.includes(:user)
-  end
-
-  # GET /Members/1 or /Members/1.json
-  def show
   end
 
   # GET /Members/new
@@ -23,16 +19,14 @@ class MembersController < ApplicationController
       if @user.save 
         @member = @user.members.create(account_id: current_tenant.id)
         @user.invite!(current_user)
-        flash[:notice] =  "Email invitation sent to #{@user.email}." 
-        redirect_to members_path
+        redirect_to members_path, notice: "Email invitation sent to #{@user.email}." 
       else
         render :new
       end
     else
       if !current_tenant.users.exists?(@user.id)
         @member = @user.members.create(account_id: current_tenant.id)
-        flash[:notice] = "#{@user.email} added succesfully to this account"
-        redirect_to members_path
+        redirect_to members_path, notice: "#{@user.email} added successfully to this account"
       else
         flash.now[:alert] = "#{@user.email} is a member already"
         render :new
