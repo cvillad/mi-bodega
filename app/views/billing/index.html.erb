@@ -7,8 +7,10 @@
       <p class="card-text"><%= @payment_method.brand %>  *****<%= @payment_method.last4 %> </p>
       <p class="card-text"> Price: <%= number_to_currency(Plan.prices[current_tenant.plan.to_sym]/100) %>/month </p>
       <p class="card-text"> Next charge on: <%= to_date(@subscription[:current_period_end].to_s) %></p>
+      <div class="d-flex justify-content-end">
+        <%= link_to "Edit", edit_billing_information_path, class: "btn btn-primary btn-sm" %>
+      </div>
     <% end %>
-    
   </div>
 </div>
 

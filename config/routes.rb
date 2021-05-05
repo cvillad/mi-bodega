@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     patch "return/:id", to: "boxes/items#return", as: "item_return"
   end
   get "billing", to: "billing#index"
+  get "payment_method", to: "billing#edit", as: "edit_billing_information"
+  patch "payment_method", to: "billing#update", as: "billing_information"
   resources :accounts, except: [:new, :create]
   patch "/accounts/select/:id", to: "accounts#select", as: "select_account"
   resources :members, except: [:edit, :update]

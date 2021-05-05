@@ -1,0 +1,34 @@
+<h1>Update credit card information</h1>
+
+<%= form_with model: @payment_method, url: billing_information_path, method: :patch do |f| %>
+  <div class="form-row">
+    <div class="form-group col-12 col-sm-10 col-md-8">
+      <%= f.label :number, "Card number" %>
+      <%= f.text_field :number, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-12 col-sm-5 col-md-4">
+      <%= f.label :cvc, "CVV" %>
+      <%= f.text_field :cvc, class: "form-control" %>
+    </div>
+    <div class="col-12 col-sm-5 col-md-4">
+      <div class="row">
+        <div class="col-12">
+          <%= f.label :card_expires, "Card expires" %>
+        </div>
+        <div class="col-6">
+          <%= f.select :exp_month, options_for_select(PaymentMethod.month_options), 
+            {include_blank: "Month"}, class: "form-control" %>
+        </div>
+        <div class="col-6 pl-sm-0">
+          <%= f.select :exp_year, options_for_select(PaymentMethod.year_options), 
+              {include_blank: "Year"}, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions mt-3">
+    <%= f.submit "Update", class: "btn btn-primary" %>
+  </div>
+<% end %>
