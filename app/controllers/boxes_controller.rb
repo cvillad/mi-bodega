@@ -14,7 +14,6 @@ class BoxesController < ApplicationController
   # GET /boxes/new
   def new
     @box = Box.new
-    @box.items.build
   end
 
   # GET /boxes/1/edit
@@ -70,6 +69,8 @@ class BoxesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_box
       @box = Box.find(params[:id])
+    rescue
+      redirect_to accounts_path, alert: "Choose the proper account"
     end
 
     # Only allow a list of trusted parameters through.

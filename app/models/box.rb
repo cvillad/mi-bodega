@@ -3,7 +3,7 @@ class Box < ApplicationRecord
   belongs_to :member
   has_one :user, through: :member
   has_many :items, dependent: :destroy
-
+  validates :name, presence: true
   accepts_nested_attributes_for :items, allow_destroy: true, reject_if: :all_blank
 
   validate :box_by_plan

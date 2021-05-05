@@ -10,7 +10,7 @@
       <%= render "layouts/error_messages", resource: @item %>
       <div class="form-group">
         <%= f.label :description %>
-        <%= f.text_field :description, class: "form-control", required: true %>
+        <%= f.text_field :description, class: "form-control", required: true, placeholder: "Description" %>
       </div>
       <div class="custom-file">
         <%= f.file_field :image, required: true, class: "custom-file-input", id: "image" %>

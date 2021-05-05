@@ -1,10 +1,10 @@
 <tr class="nested-fields" data-new-record=<%= f.object.new_record? %>>
   <td class="pl-0"> 
-    <%= f.text_field :description, placeholder: "Description", required: true, class: "form-control" %>
+    <%= f.text_field :description, placeholder: "Description", class: "form-control" %>
   </td>
   <td> 
     <div class="custom-file">
-      <%= f.file_field :image, required: true, class: "custom-file-input", id: "image" %>
+      <%= f.file_field :image, class: "custom-file-input", placeholder: "image" %>
       <label class="custom-file-label" for="image">Choose image file</label>
     </div>
   </td>
