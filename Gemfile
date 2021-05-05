@@ -36,6 +36,11 @@ group :development, :test do
   gem 'dotenv-rails', groups: [:development, :test]
 end
 
+group :test do
+  gem 'capybara', '~> 2.15.2'
+  gem 'launchy', '~> 2.4.3'
+end
+
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 4.1.0'

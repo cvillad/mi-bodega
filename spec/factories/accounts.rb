@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :account do
-    name { "MyString" }
+    sequence(:name) { |n| "Account-#{n}" }
+    plan { "free" }
+    association :user
   end
 end
