@@ -34,7 +34,7 @@ class BoxesController < ApplicationController
           standalone: true
         )
         @box.update(qr_code: svg)
-        format.html { redirect_to boxes_path, notice: "Box was successfully created." }
+        format.html { redirect_to @box, notice: "Box was successfully created." }
         format.json { render :show, status: :created, location: @box }
       else
         format.html { render :new, status: :unprocessable_entity }

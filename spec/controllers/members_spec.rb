@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe MembersController, type: :controller do 
   describe "#create" do 
-    let(:user) { create :user }
-    let(:account) { create :account, user: user }
-    let(:member) { create :member, user: user, account: account }
+    include_context "admin_user_for_session"
 
     subject { post :create, params: params }
     context "when user not signed in" do 
@@ -16,20 +14,14 @@ RSpec.describe MembersController, type: :controller do
     context "when no selected account" do 
       let(:params){}
 
-      before{ 
-        member
-        sign_in user
-      }
+      include_context "sign_in"
 
       it_behaves_like "not_account_selected"
     end
 
     context "when user signed in" do
-      before{ 
-        member
-        user.update(current_tenant_id: account.id)
-        sign_in user
-      }
+      include_context "sign_in_and_select_account"
+
       describe "and valid data provided" do 
         context "but invited user does not exists" do 
           let(:params) do 
