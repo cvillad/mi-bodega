@@ -63,6 +63,8 @@ class Boxes::ItemsController < ApplicationController
 
   def set_item 
     @item = @box.items.find(params[:id])
+  rescue
+    redirect_to @box, alert: "Selected item doesn't exist in this box"
   end
 
   def item_params 

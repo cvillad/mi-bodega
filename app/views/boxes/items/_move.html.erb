@@ -8,7 +8,7 @@
   <div class="modal-body">
     <%= form_tag box_item_path(@box, @item), method: :patch do %>
       <div class="form-group">
-        <%= label_tag :to_box, "To box" %>
+        <%= label_tag :to_box, "#{@item.description} to box" %>
         <%= select_tag :to_box, options_for_select(@options), class: "form-control" %>
       </div>
       <div class="form-group mt-3 d-flex justify-content-end">
