@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Users::RegistrationsController, type: :controller do 
   before{request.env["devise.mapping"] = Devise.mappings[:user]}
-  
+
   describe "#create" do 
     shared_examples_for "user_creation" do 
       it "should create a user" do 
@@ -62,6 +62,60 @@ RSpec.describe Users::RegistrationsController, type: :controller do
           }
         end
         it_behaves_like "user_creation"
+      end
+    end
+  end
+
+  describe "#destroy" do 
+    subject { delete :destroy }
+
+    let(:common_user) { create :user }
+    let(:common_member) {create :member, account: account, user: common_user}
+
+    include_context "admin_user_for_session"
+    shared_examples_for "user_destroy" do 
+      it "should delete a user" do 
+        expect{subject}.to change{User.count}.by(-1)
+      end
+
+      it "should redirect to root path" do 
+        subject 
+        expect(response).to redirect_to("#{request.protocol+request.host_with_port}/")
+      end
+    end
+    
+    context "when user signed in" do 
+      describe "admin user" do 
+        include_context "sign_in"
+        it_behaves_like "user_destroy"
+        it "should delete an account" do 
+          expect{subject}.to change{Account.count}.by(-1)
+        end
+      end
+
+      describe "common user" do 
+        before{ sign_in common_user }
+
+        it_behaves_like "user_destroy"
+      end
+    end
+
+    context "when selected account" do 
+      describe "admin user" do
+        include_context "sign_in_and_select_account"
+        it_behaves_like "user_destroy"
+        it "should delete an account" do 
+          expect{subject}.to change{Account.count}.by(-1)
+        end
+      end
+
+      describe "common user" do 
+        before{ 
+          common_user.update(current_tenant_id: account.id)
+          sign_in common_user
+        }
+
+        it_behaves_like "user_destroy"
       end
     end
   end
