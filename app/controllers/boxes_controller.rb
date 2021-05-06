@@ -1,5 +1,5 @@
 class BoxesController < ApplicationController
-  before_action :set_box, only: %i[ show edit update destroy ]
+  before_action :set_box, only: %i[ show destroy ]
 
   # GET /boxes or /boxes.json
   def index
@@ -14,10 +14,6 @@ class BoxesController < ApplicationController
   # GET /boxes/new
   def new
     @box = Box.new
-  end
-
-  # GET /boxes/1/edit
-  def edit
   end
 
   # POST /boxes or /boxes.json
@@ -38,19 +34,6 @@ class BoxesController < ApplicationController
         format.json { render :show, status: :created, location: @box }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @box.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /boxes/1 or /boxes/1.json
-  def update
-    respond_to do |format|
-      if @box.update(box_params)
-        format.html { redirect_to @box, notice: "Box was successfully updated." }
-        format.json { render :show, status: :ok, location: @box }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @box.errors, status: :unprocessable_entity }
       end
     end

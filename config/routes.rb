@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     invitations: 'users/invitations'
   }
 
-  resources :boxes do 
+  resources :boxes, except: [:edit, :update] do 
     resources :items, only: [:destroy, :new, :create, :update], controller: "boxes/items"
     get "move/:id", to: "boxes/items#move", as: "item_move"
     patch "use/:id", to: "boxes/items#use", as: "item_use"
@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get "billing", to: "billing#index"
   get "payment_method", to: "billing#edit", as: "edit_billing_information"
   patch "payment_method", to: "billing#update", as: "billing_information"
-  resources :accounts, except: [:new, :create]
+  resources :accounts, only: :index
   patch "/accounts/select/:id", to: "accounts#select", as: "select_account"
   resources :members, except: [:edit, :update]
 end
