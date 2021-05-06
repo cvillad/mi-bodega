@@ -11,9 +11,7 @@ class BillingController < ApplicationController
   end
 
   def update 
-    token = Stripe::Token.create(card: payment_method_params)[:id]
-    customer = Stripe::Customer.update(current_tenant.stripe_customer_id, source: token)
-    card = Stripe::Customer.list_sources(customer[:id])[:data].first
+    card = StripeRequests.card_to_client(current_tenant.stripe_customer_id, payment_method_params)
     @payment_method.update(brand: card[:brand], 
       exp_month: card[:exp_month], 
       exp_year: card[:exp_year], 
