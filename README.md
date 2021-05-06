@@ -11,3 +11,6 @@ Locate in the project path and run:
 * rails db:migrate
 * rails s
 
+link to heroku app: http://mi-bodega.herokuapp.com/
+
+Images will disappear after a time, if you don't want this behavior, use S3 Storage or similar service un production environment
