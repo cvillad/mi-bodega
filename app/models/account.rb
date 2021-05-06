@@ -1,6 +1,11 @@
 class Account < ApplicationRecord
   validates :name, presence: true, uniqueness: {case_sensitive: false}
   validates :plan, presence: true
+  validates_each :plan do |record, attribute, value|
+    unless (value === "free") || (value === "moderate") || (value === "unlimited")
+      record.errors.add(attribute, "must be valid")
+    end
+  end
 
   has_many :members, dependent: :destroy
   has_many :users, through: :members

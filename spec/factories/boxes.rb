@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :box do
-    association :user
-    name { "MyString" }
+    association :account
+    association :member
+    name { "sample-box" }
   end
 end

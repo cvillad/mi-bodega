@@ -37,7 +37,7 @@ RSpec.describe BoxesController, type: :controller do
       include_context "sign_in_and_select_account"
       subject{ post :create, params: params }
 
-      it "should redirec to box path" do 
+      it "should redirect to box path" do 
         subject 
         expect(response).to redirect_to("#{request.protocol+request.host_with_port}/boxes/#{Box.last.id}")
       end
