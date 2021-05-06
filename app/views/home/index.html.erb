@@ -1,6 +1,6 @@
 <h3 class="mb-3 mt-5 text-center">Choose your plan</h3>
 <div class="row justify-content-center align-items-center pt-5">
-  <div class="col-7 col-sm-4 col-md-3">
+  <div class="col-7 col-sm-5 col-md-4 mb-4">
     <div class="card">
       <div class="card-body">
         <strong>Free</strong>
@@ -8,11 +8,11 @@
           <li>Access to create one box</li>
         </ul>
         <p>Price: Free</p>
-        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-sm" %>
+        <%= link_to "Sign up", new_user_registration_path(plan: "free"), class: "btn btn-primary btn-sm" %>
       </div>
     </div>
   </div>
-  <div class="col-7 col-sm-4 col-md-3">
+  <div class="col-7 col-sm-5 col-md-4 mb-4">
     <div class="card">
       <div class="card-body">
         <strong>Moderate</strong>
@@ -20,11 +20,11 @@
           <li>Access to create five boxes</li>
         </ul>
         <p>Price: $5/month</p>
-        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-sm" %>
+        <%= link_to "Sign up", new_user_registration_path(plan: "moderate"), class: "btn btn-primary btn-sm" %>
       </div>
     </div>
   </div>
-  <div class="col-7 col-sm-4 col-md-3">
+  <div class="col-7 col-sm-5 col-md-4">
     <div class="card">
       <div class="card-body">
         <strong>Unlimited</strong>
@@ -32,7 +32,7 @@
           <li>Unlimited boxes</li>
         </ul>
         <p>Price: $10/month</p>
-        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-sm" %>
+        <%= link_to "Sign up", new_user_registration_path(plan: "unlimited"), class: "btn btn-primary btn-sm" %>
       </div>
     </div>
   </div>

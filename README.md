@@ -1,24 +1,13 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+To run this project you will need to have:
+* Ruby-3.0.1
+* PostgreSQL
 
-Things you may want to cover:
+Locate in the project path and run:
 
-* Ruby version
+* bundle install
+* rails db:create
+* rails db:migrate
+* rails s
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

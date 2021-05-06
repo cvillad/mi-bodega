@@ -9,6 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
+    @plan = params[:plan] if params[:plan].present?
     build_resource
     resource.build_account
     yield resource if block_given?
