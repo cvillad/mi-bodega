@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "session" do 
+  include_context "admin_user_for_session"
+  
   scenario "User is registered" do 
-    user = create :user
-    account = create :account, user: user
-    member = create :member, user: user, account: account
     visit root_path 
     click_link "Sign in"
     fill_in "Email", with: user.email 
