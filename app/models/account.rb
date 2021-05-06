@@ -11,12 +11,12 @@ class Account < ApplicationRecord
 
   def delete_stripe_customer
     Stripe::Customer.delete(stripe_customer_id) if stripe_customer_id
+  rescue
   end
 
   def subscribe(payment_method_params)
     price = Plan.stripe_prices[plan.to_sym]
-    token = Stripe::Token::create({card: payment_method_params})[:id]
-    customer = Stripe::Customer.create email: user.email, source: token
+    customer = StripeRequests.create_customer(user.email, payment_method_params)
     card = Stripe::Customer.list_sources(customer[:id])[:data].first
     create_payment_method(brand: card[:brand], 
                     exp_month: card[:exp_month], 

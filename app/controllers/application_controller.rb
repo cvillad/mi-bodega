@@ -3,17 +3,12 @@ class ApplicationController < ActionController::Base
   set_current_tenant_through_filter
   before_action :authenticate_user!
   before_action :set_tenant
-  before_action :authenticate_tenant!
-
-  def authenticate_tenant!
-    if !current_user.accounts.exists?(current_tenant&.id)
-      flash[:alert] = request.subdomain.empty? ? "Select an account first" : "You're not a member of the selected account" 
-      redirect_to accounts_path
-    end
-  end
 
   def set_tenant
-    set_current_tenant(current_user.current_tenant)
+    account = Account.find(current_user&.current_tenant_id)
+    set_current_tenant(account)
+  rescue
+    redirect_to accounts_path
   end
 
   def current_member

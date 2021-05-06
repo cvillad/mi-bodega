@@ -2,7 +2,6 @@
 
 class Users::PasswordsController < Devise::PasswordsController
   skip_before_action :set_tenant
-  skip_before_action :authenticate_tenant!
   # GET /resource/password/new
   # def new
   #   super

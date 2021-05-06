@@ -2,7 +2,6 @@
 
 class Users::ConfirmationsController < Devise::ConfirmationsController
   skip_before_action :set_tenant
-  skip_before_action :authenticate_tenant!
   def new
     self.resource = resource_class.new
   end
