@@ -19,3 +19,16 @@ shared_examples_for "not_account_selected" do
     expect(subject).to redirect_to("#{path}/accounts")
   end
 end
+
+shared_examples_for "user_login" do   
+  scenario "proper login" do 
+    visit root_path 
+    click_link "Sign in"
+    fill_in "Email", with: user.email 
+    fill_in "Password", with: user.password 
+    click_button "Log in"
+
+    expect(page).to have_current_path "/accounts"
+    expect(page).to have_content "Signed in successfully"
+  end
+end
