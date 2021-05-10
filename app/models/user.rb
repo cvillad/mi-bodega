@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :members, dependent: :destroy
   has_many :accounts, through: :members
   has_many :boxes, through: :members
-  has_one :item, through: :members
+  has_many :items, through: :members, source: :using_items
   has_one :account, dependent: :destroy
   accepts_nested_attributes_for :account
 
