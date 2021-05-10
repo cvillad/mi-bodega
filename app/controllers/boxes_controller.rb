@@ -18,7 +18,7 @@ class BoxesController < ApplicationController
 
   # POST /boxes or /boxes.json
   def create
-    @box = current_user.boxes.build(box_params.merge(member: current_member))
+    @box = current_tenant.boxes.build(box_params)
     respond_to do |format|
       if @box.save
         qrcode = RQRCode::QRCode.new("#{request.url}/#{@box.id}")
