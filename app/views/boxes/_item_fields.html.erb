@@ -1,10 +1,10 @@
 <tr class="nested-fields" data-new-record=<%= f.object.new_record? %>>
   <td class="pl-0"> 
-    <%= f.text_field :description, placeholder: "Description", class: "form-control" %>
+    <%= f.text_field :description, placeholder: "Description", class: "form-control", required: true, data: {reflex: "change->BoxesReflex#create", reflex_dataset: "combined"} %>
   </td>
   <td> 
     <div class="custom-file">
-      <%= f.file_field :image, class: "custom-file-input", placeholder: "image" %>
+      <%= f.file_field :image, class: "custom-file-input", placeholder: "image", required: true, data: {reflex: "change->BoxesReflex#create", reflex_dataset: "combined"} %>
       <label class="custom-file-label" for="image">Choose image file</label>
     </div>
   </td>

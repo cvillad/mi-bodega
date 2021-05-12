@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include DateHelper
+  helper_method :current_member
   set_current_tenant_through_filter
   before_action :authenticate_user!
   before_action :set_tenant
