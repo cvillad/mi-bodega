@@ -22,12 +22,8 @@ class Boxes::ItemsController < ApplicationController
   end
 
   def move
-    boxes = Box.select(:id, :name).where.not(id: params[:box_id])
+    boxes = Box.where.not(id: params[:box_id])
     @options = boxes.each.map{|box| [box.name, box.id]}
-    respond_to do |format|
-      format.html 
-      format.js
-    end
   end
 
   def update

@@ -1,9 +1,10 @@
 class BoxesController < ApplicationController
+  include CableReady::Broadcaster
   before_action :set_box, only: %i[ show destroy ]
 
   # GET /boxes or /boxes.json
   def index
-    @boxes = Box.all
+    @boxes = Box.order(:created_at)
   end
 
   # GET /boxes/1 or /boxes/1.json
@@ -19,33 +20,34 @@ class BoxesController < ApplicationController
   # POST /boxes or /boxes.json
   def create
     @box = current_tenant.boxes.build(box_params)
-    respond_to do |format|
-      if @box.save
-        qrcode = RQRCode::QRCode.new("#{request.url}/#{@box.id}")
-        svg = qrcode.as_svg(
-          offset: 0,
-          color: '000',
-          shape_rendering: 'crispEdges',
-          module_size: 4,
-          standalone: true
-        )
-        @box.update(qr_code: svg)
-        format.html { redirect_to @box, notice: "Box was successfully created." }
-        format.json { render :show, status: :created, location: @box }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @box.errors, status: :unprocessable_entity }
-      end
+    if @box.save
+      qrcode = RQRCode::QRCode.new("#{request.url}/#{@box.id}")
+      svg = qrcode.as_svg(
+        offset: 0,
+        color: '000',
+        shape_rendering: 'crispEdges',
+        module_size: 4,
+        standalone: true
+      )
+      @box.update(qr_code: svg)
+      cable_ready["accounts_channel:#{current_tenant.id}"].insert_adjacent_html(
+        selector: "#boxes",
+        position: "beforeend",
+        html: render_to_string(partial: "box", locals: { box: @box })
+      )
+      cable_ready.broadcast
+      redirect_to boxes_path, notice: "Box was successfully created."
     end
   end
 
   # DELETE /boxes/1 or /boxes/1.json
   def destroy
     @box.destroy
-    respond_to do |format|
-      format.html { redirect_to boxes_url, notice: "Box was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    cable_ready["accounts_channel:#{current_tenant.id}"].remove(
+      selector: "#box-#{@box.id}"
+    )
+    cable_ready.broadcast
+    redirect_to boxes_url, notice: "Box was successfully destroyed."
   end
 
   private
