@@ -1,7 +1,7 @@
 <h3 class="text-center mb-3"><%= @box.name %></h3>
-<div class="row justify-content-center">
+<div class="row justify-content-center" id="box-<%= @box.id %>">
   <% @items.each do |item| %>
-    <%= render "item", item: item %>
+    <%= render "boxes/items/item", item: item, box: @box %>
   <% end %>
 </div>
 <%= link_to 'Add item', new_box_item_path(@box),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary'}  %>

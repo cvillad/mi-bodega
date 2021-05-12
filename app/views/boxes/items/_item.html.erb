@@ -1,0 +1,17 @@
+<div id="item-<%= item.id %>" class="col-10 col-sm-6 col-md-4 mb-3" data-controller="item">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title" data-item-target="title"><%= item.description %><%= '<span class="badge badge-secondary ml-1">In use</span>'.html_safe if item.using_by_id %></h5>
+      <%= image_tag url_for(item.image), class: "mb-3 w-100 item-img" %>
+      <div class="d-flex">
+        <% if item.using_by.nil? %>
+          <%= link_to "Use", "#", class: "btn btn-sm btn-primary", data: { reflex: "click->ItemsReflex#use", id: item.id, current_member: current_member.id } %>  
+          <%= link_to 'Move', box_item_move_path(box, item),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-sm ml-1'} if current_tenant.boxes.count > 1 %>
+          <%= link_to "Delete", box_item_path(box, item), class: "btn btn-danger btn-sm ml-1", data: {confirm: "Are you sure?"}, method: :delete %>
+        <% else %>
+            <%= link_to "Return", "#", class: "btn btn-primary btn-sm", data: { reflex: "click->ItemsReflex#return", id: item.id } if item.user == current_user %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

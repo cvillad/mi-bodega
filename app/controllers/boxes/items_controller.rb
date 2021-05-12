@@ -1,24 +1,11 @@
 class Boxes::ItemsController < ApplicationController
+  include CableReady::Broadcaster
   before_action :set_box 
   before_action :set_item, except: [:new, :create]
-  before_action :validate_use, only: [:use, :update] 
+  before_action :validate_use, only: [:update] 
 
   def new 
     @item = @box.items.build
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-
-  def use
-    @item.update(using_by_id: current_member.id)
-    redirect_to @box, notice: "You're using this item now"
-  end
-
-  def return
-    @item.update(using_by_id: nil)
-    redirect_to @box, notice: "You're not using this item anymore"
   end
 
   def move
@@ -29,25 +16,40 @@ class Boxes::ItemsController < ApplicationController
   def update
     @target_box = current_tenant.boxes.find(params[:to_box])
     if @item.update(box_id: @target_box.id)
+      cable_ready["accounts_channel:#{current_tenant.id}"].remove(
+        selector: "#item-#{@item.id}"
+      )
+      cable_ready["accounts_channel:#{current_tenant.id}"].insert_adjacent_html(
+        selector: "#box-#{@target_box.id}",
+        position: "beforeend",
+        html: render_to_string(partial: "item", locals: { item: @item, box: @target_box })
+      )
+      cable_ready.broadcast
       redirect_to @box, notice: "Item moved to box #{@target_box.name}"
     end
   end
 
   def create 
     @item = @box.items.build(item_params)
-    respond_to do |format|
-      if @item.save
-        format.html{redirect_to @box, notice: "Item created succesfully"}
-        format.js
-      else
-        format.html{redirect_to @box, alert: "Failed to create item"}
-        format.js
-      end
+    if @item.save
+      cable_ready["accounts_channel:#{current_tenant.id}"].insert_adjacent_html(
+        selector: "#box-#{@box.id}",
+        position: "beforeend",
+        html: render_to_string(partial: "item", locals: { item: @item, box: @box })
+      )
+      cable_ready.broadcast
+      redirect_to @box, notice: "Item created succesfully"
+    else
+      redirect_to @box, alert: "Failed to create item"
     end
   end
 
   def destroy 
     @item.destroy 
+    cable_ready["accounts_channel:#{current_tenant.id}"].remove(
+      selector: "#item-#{@item.id}"
+    )
+    cable_ready.broadcast
     flash[:notice] = "Item deleted successfully"
     redirect_to @box
   end
