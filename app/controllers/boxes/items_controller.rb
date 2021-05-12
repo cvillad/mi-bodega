@@ -20,7 +20,7 @@ class Boxes::ItemsController < ApplicationController
         selector: "#item-#{@item.id}"
       )
       cable_ready["accounts_channel:#{current_tenant.id}"].insert_adjacent_html(
-        selector: "#box-#{@target_box.id}",
+        selector: "#show-box-#{@target_box.id}",
         position: "beforeend",
         html: render_to_string(partial: "item", locals: { item: @item, box: @target_box })
       )
@@ -33,7 +33,7 @@ class Boxes::ItemsController < ApplicationController
     @item = @box.items.build(item_params)
     if @item.save
       cable_ready["accounts_channel:#{current_tenant.id}"].insert_adjacent_html(
-        selector: "#box-#{@box.id}",
+        selector: "#show-box-#{@box.id}",
         position: "beforeend",
         html: render_to_string(partial: "item", locals: { item: @item, box: @box })
       )

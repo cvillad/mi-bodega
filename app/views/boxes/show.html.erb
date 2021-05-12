@@ -1,5 +1,5 @@
 <h3 class="text-center mb-3"><%= @box.name %></h3>
-<div class="row justify-content-center" id="box-<%= @box.id %>">
+<div class="row justify-content-center" id="show-box-<%= @box.id %>">
   <% @items.each do |item| %>
     <%= render "boxes/items/item", item: item, box: @box %>
   <% end %>
