@@ -2,12 +2,12 @@ require 'rails_helper'
 
 shared_context "admin_user_for_session" do 
   let(:user) { create :user }
-  let(:account) { create :account, user: user }
+  let(:account) { create :account, user: user, plan: "moderate" }
   let(:member) { create :member, user: user, account: account }
 end
 
 shared_context "user_for_session" do 
-  let(:account) { create :account }
+  let(:account) { create :account, plan: "moderate" }
   let(:user) { create :user }
   let(:member) { create :member, user: user, account: account }
 end

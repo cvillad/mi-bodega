@@ -11,10 +11,12 @@ RSpec.feature "Boxes", type: :feature do
       expect(page).to have_current_path boxes_path
       click_link "New Box"
       fill_in "Name", with: "sample-box"
+      within "" do 
+      end
       # expect{
-      #   #click_link "New item"
-      #   #all(".nested-fields").last.fill_in "Description", with: "sample-description"
-      #   #all(".nested-fields").last.attach_file("image", "spec/images/mona.jpeg")
+      #   click_link "New item"
+      #   all(".nested-fields").last.fill_in "Description", with: "sample-description"
+      #   all(".nested-fields").last.attach_file("image", "spec/images/mona.jpeg")
       #   click_button "Create Box"
       #   expect(page).to have_content "Box was successfully created"
       # }.to change{ account.boxes.count }.by(1)
@@ -22,30 +24,48 @@ RSpec.feature "Boxes", type: :feature do
   end
 
   context "use item" do 
-    let(:box_1) { create :box, account: account, member: member }
-    let(:item) { create :item, box: box_1 }
-    before{ item }
+    let(:box) { create :box, account: account }
+    let(:item) { create :item, box: box }
+
+    before { item }
+
     scenario "should update using_by to current_user id" do 
       login_user(user)
       select_account(account)
-      visit box_path(box_1)
-      expect(page).to have_current_path box_path(box_1)
+      visit box_path(box)
+      expect(page).to have_current_path box_path(box)
       click_link "Use"
       expect(page).to have_content "using this item now"
-      expect(item.using_by).to be_truthy
+      item.reload
+      expect(item.using_by).to eq(member)
     end
   end
 
   context "move item" do
-    let(:box_1) { create :box, account: account, member: member }
-    let(:box_2) { create :box, account: account, member: member }
-    let(:item) { create :item, box: box_1 }
+    let(:box) { create :box, account: account }
+    let(:item) { create :item, box: box }
+    let(:another_box) { create :box, account: account, name: "bad-box" }
+
+    before { 
+      item
+      another_box
+    }
+
     scenario "should update box_id of the item" do
       login_user(user)
       select_account(account)
-      visit box_path(box_1)
-      expect(page).to have_current_path box_path(box_1)
-      click_link "Move"
+      visit box_path(box)
+      expect(page).to have_current_path box_path(box)
+      within "#modal-window" do 
+        byebug
+        select another_box.name, from: "#{item.description} to box"
+      end
+      # click_link "Move"
+      # select another_box.name, from: "To box"
+      # click_button "Move"
+      # expect(page).to have_content("Item moved to")
+      # item.reload
+      # expect(item.box_id).to eq(another_box.id)
     end
   end
 end

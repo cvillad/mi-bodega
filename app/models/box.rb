@@ -1,7 +1,7 @@
 class Box < ApplicationRecord
   acts_as_tenant :account
   has_many :items, dependent: :destroy
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: :account_id, case_sensitive: false }
   accepts_nested_attributes_for :items, allow_destroy: true, reject_if: :all_blank
 
   after_initialize -> { 
